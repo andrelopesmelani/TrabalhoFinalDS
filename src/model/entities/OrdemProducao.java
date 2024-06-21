@@ -1,3 +1,5 @@
+package model.entities;
+
 public class OrdemProducao {
     private int id;
     private Produto produto;

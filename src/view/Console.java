@@ -31,21 +31,28 @@ public class Console {
         return lerInt("Digite um valor 'int'");
     }
 
-    public static float lerFloat() {
+    public static float lerFloat(String msg) {
         float valor = 0;
 
         while (true) {
             try {
+                System.out.print(msg + ": ");
                 valor = scanner.nextFloat();
-                scanner.nextLine();
                 break;
 
             } catch (InputMismatchException e) {
-                scanner.nextLine();
+              
                 System.out.println("O valor informado não é um 'float'. Digite novamente: ");
+            }
+             finally { // SEMPRE será executado
+                scanner.nextLine(); // limpa o buffer
             }
         }
         return valor;
+    }
+
+    public static float lerFloat() {
+        return lerInt("Digite um valor 'int'");
     }
 
     public static String lerString(String msg) {

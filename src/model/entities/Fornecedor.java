@@ -1,3 +1,4 @@
+package model.entities;
 // Classe Fornecedor representa os fornecedores de matéria-prima
 public class Fornecedor {
     private int id;
@@ -15,8 +16,7 @@ public class Fornecedor {
     public int getId() {
         return id;
     }
-qidjpxms,po2k
-xpom
+
     public void setId(int id) {
         this.id = id;
     }
