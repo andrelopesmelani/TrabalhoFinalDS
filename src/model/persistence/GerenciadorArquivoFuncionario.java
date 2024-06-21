@@ -7,11 +7,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import model.entities.Produto;
+import model.entities.Funcionario;
 
-public abstract class GerenciadorArquivo {
+public abstract class GerenciadorArquivoFuncionario {
 
-    private static final String ARQUIVO_PRODUTO = "lista-produtos.txt";
+    private static final String ARQUIVO_PRODUTO = "lista-funcionarios.txt";
 
     
     public static void criarArquivoSeNaoExistir() {
@@ -29,9 +29,9 @@ public abstract class GerenciadorArquivo {
         }
     }
     
-    public static void lerArquivo(ArrayList<Produto> listaProdutos) throws IOException{
+    public static void lerArquivo(ArrayList<Funcionario> listaFuncionarios) throws IOException{
 
-        listaProdutos.clear();
+        listaFuncionarios.clear();
 
         try (FileReader fileReader = new FileReader(ARQUIVO_PRODUTO);
         BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -40,11 +40,11 @@ public abstract class GerenciadorArquivo {
             
             while ((linhaAtualDoArquivo = bufferedReader.readLine()) != null) {
                 
-                Produto tempProduto = new Produto();
+                Funcionario tempFuncionario = new Funcionario();
 
-                tempProduto.fromString(linhaAtualDoArquivo);
+                tempFuncionario.fromString(linhaAtualDoArquivo);
                
-                listaProdutos.add(tempProduto);
+                listaFuncionarios.add(tempFuncionario);
 
             }
 
@@ -52,14 +52,14 @@ public abstract class GerenciadorArquivo {
 
     }
 
-    public static void salvarProdutoNoArquivo(ArrayList<Produto> listaProdutos) throws IOException{
+    public static void salvarFuncionarioNoArquivo(ArrayList<Funcionario> listaFuncionarios) throws IOException{
 
         try (FileWriter fileWriter = new FileWriter(ARQUIVO_PRODUTO);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
-                for(Produto tempProduto : listaProdutos) {
+                for(Funcionario tempFuncionario : listaFuncionarios) {
 
-                    bufferedWriter.write(tempProduto.toString() + "\n");
+                    bufferedWriter.write(tempFuncionario.toString() + "\n");
 
                 }
         }
