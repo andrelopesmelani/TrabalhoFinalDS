@@ -17,7 +17,7 @@ public abstract class ListaProdutos {
     public static void verificarListaVazia() throws Exception {
 
         if (listaProdutos.isEmpty()) {
-            throw new Exception("\nNão há livros cadastrados");
+            throw new Exception("\nNão há produtos cadastrados");
         }
 
     }
