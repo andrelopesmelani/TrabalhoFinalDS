@@ -8,11 +8,11 @@ public abstract class ListaOrdemProducao {
 
     private static ArrayList<OrdemProducao> listaOrdemProducao = new ArrayList<>();
 
-    public static void salvarOrdemProdução(OrdemProducao ordemProducao) {
+    public static void salvarOrdemProducao(OrdemProducao ordemProducao) {
         listaOrdemProducao.add(ordemProducao);
     }
 
-    public static ArrayList<OrdemProducao> getListaFuncionarios() {
+    public static ArrayList<OrdemProducao> getListaOrdemProducao() {
         return listaOrdemProducao;
     }
 
@@ -24,20 +24,7 @@ public abstract class ListaOrdemProducao {
 
     }
 
-    public static OrdemProducao buscarProtutosOrdemProducao(String produto) throws Exception {
-
-        for(OrdemProducao
-         tempOrdemProdução : listaOrdemProducao) {
-
-            if (tempOrdemProdução.getProduto().contains(produto)) {
-                return tempOrdemProdução;
-            }
-        }
-
-        throw new Exception("O Produto" + produto + " não encontrado na Ordem de Produção");
-    }
-
-    public static void apagarOrdemProdução(OrdemProducao ordemProducao) {
+    public static void apagarOrdemProducao(OrdemProducao ordemProducao) {
         listaOrdemProducao.remove(ordemProducao);
     }
 

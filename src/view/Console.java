@@ -9,21 +9,19 @@ public class Console {
     public static int lerInt(String msg){
         int valor = 0;
         while(true){
-            try { // tenta executar a leitura do int
+            try { 
                 System.out.print(msg + ": ");
                 valor = scanner.nextInt();
-                break; // quebra o loop se o valor foi lido
+                break;
             
             } catch (InputMismatchException e) {
-                // senão, a exceção é capturada:
                 System.out.println("O valor informado não é um inteiro.");
             
-            } finally { // SEMPRE será executado
+            } finally {
 
-                scanner.nextLine(); // limpa o buffer
+                scanner.nextLine();
             }
         }
-        // retorna o valor lido:
         return valor;
     }
 
@@ -44,8 +42,8 @@ public class Console {
               
                 System.out.println("O valor informado não é um 'float'. Digite novamente: ");
             }
-             finally { // SEMPRE será executado
-                scanner.nextLine(); // limpa o buffer
+             finally { 
+                scanner.nextLine();
             }
         }
         return valor;

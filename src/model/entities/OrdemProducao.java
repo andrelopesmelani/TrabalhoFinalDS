@@ -1,25 +1,19 @@
 package model.entities;
 
-public class OrdemProducao {
-    private int id;
+public class OrdemProducao extends Produto {
     private Produto produto;
     private int quantidade;
+
+    public OrdemProducao () {
+      
+    }
     
-    // Construtor da classe OrdemProducao
-    public OrdemProducao(int id, Produto produto, int quantidade) {
-        this.id = id;
+    
+    public OrdemProducao(Produto produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
     }
-    
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Produto getProduto() {
         return produto;
@@ -36,4 +30,28 @@ public class OrdemProducao {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
+    @Override
+    public String toString() {
+        return "Produto=" + produto.getNome() + ", Quantidade=" + quantidade;
+    }
+
+    public String exibirDados() {
+        return  "\nProduto: " + produto.getNome() +
+                "\nQuantidade: " + quantidade;
+    }
+
+    
+    public void fromString(String linha) {
+        String[] dadosOrdem = linha.split(", ");
+        
+        String produtoString = dadosOrdem[0].split("=")[1];
+        Produto produto = new Produto();
+        produto.setNome(produtoString);
+        this.produto = produto;
+        
+        String quantidadeString = dadosOrdem[1].split("=")[1];
+        this.quantidade = Integer.parseInt(quantidadeString);
+    }
+
 }
