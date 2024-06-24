@@ -1,31 +1,20 @@
 package model.entities;
+
 public class Produto {
-    private static int nextId = 1;
-    private int id;
     private String nome;
     private String descricao;
     private float preco;
 
     public Produto () {
-        this.id = nextId++;
     }
     
-    // Construtor da classe Produto
     public Produto(String nome, String descricao, float preco) {
-        this.id = nextId++;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
     }
-    
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getNome() {
         return nome;
@@ -51,25 +40,32 @@ public class Produto {
         this.preco = preco;
     }
 
+
     @Override
     public String toString() {
-        return "Id=" + id + ", Produto=" + nome + 
-        ", Descricao=" + descricao + ", Preco=R$" + preco;
+        return "Produto=" + nome + 
+        ", Descricao=" + descricao + ", Preco=" + preco;
     }
 
     public String exibirDados() {
-        return  "\nID: " + id +
-                "\nProduto: " + nome +
+        return  "\nProduto: " + nome +
                 "\nDescricao: " + descricao + 
                "\nPreço: " + preco;
     }
 
     public void fromString(String linha) {
-
         String[] dadosProduto = linha.split(", ");
+    
+    
+        this.nome = dadosProduto[0].split("=")[1];
+    
+        this.descricao = dadosProduto[1].split("=")[1];
+    
 
-        nome = dadosProduto[0].split("=")[1];
-        descricao = dadosProduto[1].split("=")[1];
-
+        String precoString = dadosProduto[2].split("=")[1];
+        this.preco = Float.parseFloat(precoString);
     }
+    
+
+
 }

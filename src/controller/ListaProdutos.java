@@ -1,5 +1,6 @@
 package controller;
 import java.util.ArrayList;
+
 import model.entities.Produto;
 
 public abstract class ListaProdutos {

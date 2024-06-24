@@ -1,31 +1,18 @@
 package model.entities;
 
-public class Funcionario {
-    private static int nextId = 1;
-    private int id;
+public abstract class Funcionario {
+
     private String nome;
-    private String cargo;
+    protected float valorHora;
+    protected float horasTrab;
 
-
-    public Funcionario () {
-        this.id = nextId++;
+    public Funcionario() {
     }
-    
-    // Construtor da classe Produto
-    public Funcionario(String nome, String cargo) {
-        this.id = nextId++;
+
+    public Funcionario(String nome, float valorHora, float horasTrab) {
         this.nome = nome;
-        this.cargo = cargo;
-    
-    }
-    
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.valorHora = valorHora;
+        this.horasTrab = horasTrab;
     }
 
     public String getNome() {
@@ -36,32 +23,40 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    public String getCargo() {
-        return cargo;
+    public float getValorHora() {
+        return valorHora;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setValorHora(float valorHora) {
+        this.valorHora = valorHora;
+    }
+
+    public float getHorasTrab() {
+        return horasTrab;
+    }
+
+    public void setHorasTrab(float horasTrab) {
+        this.horasTrab = horasTrab;
     }
 
     @Override
     public String toString() {
-        return "Id=" + id + ", Nome=" + nome + 
-        ", Cargo=" + cargo ;
+        return "Nome=" + nome +
+               ", Valor da hora=" + valorHora +
+               ", Horas trabalhadas=" + horasTrab;
     }
 
     public String exibirDados() {
-        return  "\nID: " + id +
-                "\nProduto: " + nome +
-                "\nCargo: " + cargo;
+        return "\nNome: " + nome +
+               "\nValor da hora: R$ " + valorHora +
+               "\nHoras trabalhadas: " + horasTrab + "h";
     }
 
     public void fromString(String linha) {
+        String[] dadosFuncionario = linha.split(", ");
 
-        String[] dadosProduto = linha.split(", ");
-
-        nome = dadosProduto[0].split("=")[1];
-        cargo = dadosProduto[1].split("=")[1];
-
+        this.nome = dadosFuncionario[0].split("=")[1];
+        this.valorHora = Float.parseFloat(dadosFuncionario[1].split("=")[1]);
+        this.horasTrab = Float.parseFloat(dadosFuncionario[2].split("=")[1]);
     }
 }

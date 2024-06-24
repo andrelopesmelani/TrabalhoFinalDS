@@ -1,22 +1,29 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.entities.Produto;
 import model.entities.Funcionario;
+import model.entities.Gerente;
+import model.entities.Operador;
+import model.entities.OrdemProducao;
 import model.persistence.GerenciadorArquivoProduto;
 import model.persistence.GerenciadorArquivoFuncionario;
+import model.persistence.GerenciadorArquivoOrdemProducao;
 import view.Console;
 
 public class Sistema {
 
     static ArrayList<Produto> listaProdutos = ListaProdutos.getListaProdutos();
     static ArrayList<Funcionario> listaFuncionarios = ListaFuncionarios.getListaFuncionarios();
+    static ArrayList<OrdemProducao> listaOrdemProducao = ListaOrdemProducao.getListaOrdemProducao();
    
     public static void executarSistema() {
-
-        carregarDadosDoArquivo();
-
+        carregarDadosDoArquivoProduto();
+        carregarDadosDoArquivoFuncionario();
+        carregarDadosDoArquivoOrdemProducao();
         while (true) {
             
             exibirMenu();
@@ -31,6 +38,8 @@ public class Sistema {
         System.out.println("\n********* Fábrica System *********\n");
         System.out.println("1) Produtos");
         System.out.println("2) Funcionários");
+        System.out.println("3) Estoque");
+        System.out.println("4) Ordem de Produção");
         System.out.println("0) Sair\n");
     }
 
@@ -46,11 +55,19 @@ public class Sistema {
 
     private static void exibirMenuFuncionario() {
         System.out.println("\n********* Funcionario System *********\n");
-        System.out.println("1) Cadastrar Funcionário");
+        System.out.println("1) Cadastrar Gerente");
+        System.out.println("2) Cadastrar Operador");
+        System.out.println("3) Listar todos");
+        System.out.println("4) Buscar funcionario");
+        System.out.println("5) Apagar funcionario");
+        System.out.println("6) Atualizar dados de um funcionario");
+        System.out.println("0) Voltar\n");
+    }
+
+    private static void exibirMenuOrdemProducao() {
+        System.out.println("\n********* Ordem Produção System *********\n");
+        System.out.println("1) Cadastrar Ordem de Produção");
         System.out.println("2) Listar todos");
-        System.out.println("3) Buscar funcionario");
-        System.out.println("4) Apagar funcionario");
-        System.out.println("5) Atualizar dados de um funcionario");
         System.out.println("0) Voltar\n");
     }
 
@@ -63,6 +80,14 @@ public class Sistema {
 
             case 2:
                 executarMenuFuncionario();
+                break;
+
+            case 3:
+                exibirEstoque();
+                break;
+
+            case 4:
+                executarMenuOrdemProducao();
                 break;
 
             case 0:
@@ -118,6 +143,7 @@ public class Sistema {
     }
 
     private static void executarMenuFuncionario() {
+ 
         int op;
         do {
             exibirMenuFuncionario();
@@ -129,25 +155,28 @@ public class Sistema {
     private static void verificarOpcaoMenuFuncionario(int op) {
         switch (op) {
             case 1:
-                salvarFuncionario();
+                salvarGerente();
                 break;
 
-            case 2:
-                listarFuncionarios();
+            case 2: 
+                salvarOperador();
                 break;
 
             case 3:
-                buscarFuncionario();
+                listarFuncionarios();
                 break;
 
             case 4:
-                apagarFuncionario();
+                buscarFuncionario();
                 break;
 
             case 5:
+                apagarFuncionario();
+                break;
+
+            case 6:
                 atualizarFuncionario();
                 break;  
-
 
             case 0:
                 System.out.println("Voltando ao menu principal...");
@@ -159,6 +188,35 @@ public class Sistema {
         }
     }
 
+    private static void executarMenuOrdemProducao() {
+ 
+        int op;
+        do {
+            exibirMenuOrdemProducao();
+            op = Console.lerInt("Informe uma opção");
+            verificarOpcaoMenuOrdemProducao(op);
+        } while (op != 0);
+    }
+
+    private static void verificarOpcaoMenuOrdemProducao(int op) {
+        switch (op) {
+            case 1:
+                salvarOrdemProducao();
+                break;
+
+            case 2:
+                listarOrdemProducao();
+                break;
+
+            case 0:
+                System.out.println("Voltando ao menu principal...");
+                break;
+
+            default:
+                System.out.println("\nOpção inválida. Digite novamente.");
+                break;
+        }
+    }
 
     private static void atualizarProduto() {
         
@@ -196,7 +254,7 @@ public class Sistema {
 
     }
 
-    private static void carregarDadosDoArquivo() {
+    private static void carregarDadosDoArquivoProduto() {
         
         try {
             GerenciadorArquivoProduto.criarArquivoSeNaoExistir();
@@ -247,9 +305,6 @@ public class Sistema {
 
             System.out.println(e.getMessage());
         }
-        
-        
-        
 
     }
 
@@ -297,8 +352,6 @@ public class Sistema {
         }
     }
 
-
-    
     private static void atualizarFuncionario() {
         
         try {
@@ -312,19 +365,21 @@ public class Sistema {
             Funcionario tempFuncionario = ListaFuncionarios.buscarFuncionario(nome);
 
             System.out.println("\nFuncionario Localizado:" +
-            tempFuncionario.exibirDados() + "\nInforme novos dados:\n");
+            ListaFuncionarios.getListaFuncionarios() + "\nInforme novos dados:\n");
 
             nome = Console.lerString("Novo nome");
-            String cargo = Console.lerString("Novo cargo");
+            float valorHora = Console.lerFloat("Novo valor por hora");
+            float horasTrab = Console.lerFloat("Novas horas trabalhadas");
    
 
             tempFuncionario.setNome(nome);
-            tempFuncionario.setCargo(cargo);
+            tempFuncionario.setHorasTrab(horasTrab);
+            tempFuncionario.setValorHora(valorHora);
  
             GerenciadorArquivoFuncionario.salvarFuncionarioNoArquivo(listaFuncionarios);
 
             System.out.println("\nFuncionário atualizado com sucesso:" + 
-            tempFuncionario.exibirDados());
+            ListaFuncionarios.getListaFuncionarios());
         
         } catch (Exception exception) {
 
@@ -345,18 +400,41 @@ public class Sistema {
 
     }
 
-    private static void salvarFuncionario() {
+    private static void salvarGerente() {
 
-        System.out.println("\nNovo Funcionario");
+        System.out.println("\nNovo Gerente");
         String nome = Console.lerString("Informe o nome do funcionário");
-        String cargo = Console.lerString("Informe o cargo do funcionário");
-
-        Funcionario funcionario = new Funcionario(nome, cargo);
+        String setor = Console.lerString("Informe o setor");
+        float valorHora = Console.lerFloat("Valor por hora");;
+        float horasTrab = Console.lerFloat("Horas trabalhadas");
+        float bonus = Console.lerFloat("Informe o bonus anual");
+        Gerente gerente = new Gerente(nome, valorHora, horasTrab, setor, bonus);
 
         try { 
-            ListaFuncionarios.salvarFuncionario(funcionario);
+            ListaFuncionarios.salvarFuncionario(gerente);
             GerenciadorArquivoFuncionario.salvarFuncionarioNoArquivo(listaFuncionarios);
-            System.out.println("\nFuncionario foi salvo no arquivo!");
+            System.out.println("\nGerente foi salvo no arquivo!");
+        
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private static void salvarOperador() {
+
+        System.out.println("\nNovo Operador");
+        String nome = Console.lerString("Informe o nome do funcionário");
+        String funcao = Console.lerString("Informe a função");
+        float valorHora = Console.lerFloat("Valor por hora");;
+        float horasTrab = Console.lerFloat("Horas trabalhadas");
+        Operador operador = new Operador(nome, valorHora, horasTrab, funcao);
+
+        try { 
+            ListaFuncionarios.salvarFuncionario(operador);
+            GerenciadorArquivoFuncionario.salvarFuncionarioNoArquivo(listaFuncionarios);
+            System.out.println("\nOperador foi salvo no arquivo!");
         
         } catch (Exception e) {
 
@@ -370,23 +448,14 @@ public class Sistema {
         try {
             ListaFuncionarios.verificarListaVazia();
             
-            System.out.println("\nFuncionários Cadastrados");
+            System.out.println("\nFuncionários Cadastrados\n");
     
-            for(Funcionario tempFuncionario : listaFuncionarios) {
-    
-                System.out.println(tempFuncionario.exibirDados());
-    
+            for (Funcionario tempFuncionario : listaFuncionarios) {
+                System.out.println(tempFuncionario);
             }
-            
-
         } catch (Exception e) {
-
             System.out.println(e.getMessage());
         }
-        
-        
-        
-
     }
 
     private static void buscarFuncionario() {
@@ -433,7 +502,105 @@ public class Sistema {
         }
     }
 
+    private static void salvarOrdemProducao() {
+        try {
+            ListaProdutos.verificarListaVazia();
+            
+            System.out.println("\nProdutos Cadastrados");
+
+            for (Produto tempProduto : ListaProdutos.getListaProdutos()) {
+                System.out.println(tempProduto.exibirDados());
+            }
+ 
+            Produto tempProduto = null;
+            while (tempProduto == null) {
+                String nome = Console.lerString("Selecione o produto pelo nome: ");
+                try {
+                    tempProduto = ListaProdutos.buscarProduto(nome);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+    
+            int quantidade = 0;
+            while (quantidade <= 0) {
+                quantidade = Console.lerInt("Selecione a quantidade produzida: ");
+                if (quantidade <= 0) {
+                    System.out.println("Quantidade inválida. Deve ser um número inteiro positivo e diferente de 0.");
+                }
+            }
+    
+            OrdemProducao ordemProducao = new OrdemProducao(tempProduto, quantidade);
+            ListaOrdemProducao.salvarOrdemProducao(ordemProducao);
+            
+            try {
+                GerenciadorArquivoOrdemProducao.salvarOrdemProducaoNoArquivo(ListaOrdemProducao.getListaOrdemProducao());
+                System.out.println("\nOrdem de produção foi salva no arquivo!");
+            } catch (Exception e) {
+                System.out.println("Erro ao salvar a ordem de produção no arquivo: " + e.getMessage());
+            }
+    
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void carregarDadosDoArquivoOrdemProducao() {
+        
+        try {
+            GerenciadorArquivoOrdemProducao.criarArquivoSeNaoExistir();
+            GerenciadorArquivoOrdemProducao.lerArquivo(listaOrdemProducao);
+        } catch (Exception e) {
+    
+            System.out.println(e.getMessage());
+        }
+
+    }
 
 
+    private static void listarOrdemProducao() {
+
+        try {
+            ListaOrdemProducao.verificarOrdemProduçãoVazia();
+            
+            System.out.println("\nOrdem de produção registradas");
+    
+            for(OrdemProducao tempOrdemProducao : listaOrdemProducao) {
+                System.out.println(tempOrdemProducao.exibirDados());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+private static void exibirEstoque() {
+    try {
+        Map<Produto, Integer> mapaEstoque = GerenciadorArquivoOrdemProducao.filtrarListaOrdemProducao(listaOrdemProducao);
+
+        System.out.println("\n*************** Estoque ***************\n");
+        Map<String, Integer> estoqueAgrupado = new HashMap<>();
+
+        for (Map.Entry<Produto, Integer> entry : mapaEstoque.entrySet()) {
+            Produto produto = entry.getKey();
+            Integer quantidade = entry.getValue();
+            String nomeProduto = produto.getNome();
+
+            if (estoqueAgrupado.containsKey(nomeProduto)) {
+                int quantidadeAtualizada = estoqueAgrupado.get(nomeProduto) + quantidade;
+                estoqueAgrupado.put(nomeProduto, quantidadeAtualizada);
+            } else {
+                estoqueAgrupado.put(nomeProduto, quantidade);
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : estoqueAgrupado.entrySet()) {
+            System.out.println("Produto=" + entry.getKey() + ", Quantidade=" + entry.getValue());
+        }
+
+    } catch (Exception e) {
+        System.out.println("Erro ao exibir o estoque: " + e.getMessage());
+    }
+}
 
 }
+
